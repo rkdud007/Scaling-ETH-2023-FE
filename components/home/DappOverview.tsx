@@ -1,16 +1,5 @@
 import * as S from "./DappOverview.styles";
 
-const VotingBox = () => {
-  return (
-    <S.VoteWrapper>
-      <div>Cast your vote</div>
-      <div>
-        <div>yes</div>
-        <div>Vote</div>
-      </div>
-    </S.VoteWrapper>
-  );
-};
 // TODO : Want to show some information about voting transaction. ex. transaction call from where to where
 const InformationBox = () => {
   return (
@@ -53,7 +42,13 @@ const DappOverview = () => {
         <div>Example DAPP : snapshot mock</div>
       </S.InformationWrapper>
       <InformationBox />
-      <VotingBox />
+      <S.VoteWrapper>
+        <div>Cast your vote</div>
+        <div>
+          <div>yes</div>
+          <div>Vote</div>
+        </div>
+      </S.VoteWrapper>
     </>
   );
 };

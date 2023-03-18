@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import DappOverview from "@/components/home/DappOverview";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import WalletWrapper from "@/components/walletPage/WalletWrapper/WalletWrapper";
+import RecoveryWallet from "@/components/walletPage/RecoveryWallet/RecoveryWallet";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function Wallet() {
       </Head>
       <main>
         <Navbar />
-        <WalletWrapper />
+        <RecoveryWallet />
       </main>
     </>
   );
