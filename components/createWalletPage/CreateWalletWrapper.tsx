@@ -1,10 +1,7 @@
-import { Wallet, Provider, utils, types } from "zksync-web3";
+import { Provider, utils, types, Wallet } from "zksync-web3";
 import { useState } from "react";
 import * as S from "./CreateWalletWrapper.styles";
-import { mainclient, walletClient } from "@/shared/wagmiClient";
-import { simpleAccountAbi } from "@/shared/abi/simpleAccount";
 import { walletFactoryAbi } from "@/shared/abi/walletFactory";
-import { getAccount, toBytes } from "viem";
 import { simpleAccountTotal } from "@/shared/abi/simpleAccountTotal";
 import { ethers } from "ethers";
 
@@ -12,7 +9,8 @@ const CreateWalletWrapper = () => {
   const [password, setPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
-  const wallet = ethers.Wallet.createRandom();
+  const wallet = Wallet.createRandom();
+
   // const myWallet = new Wallet(
   //   "0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110"
   // );
@@ -33,18 +31,20 @@ const CreateWalletWrapper = () => {
   };
 
   const createWalletFunc = async () => {
-    const provider = new Provider("http://localhost:8545/");
+    const provider = new Provider("http://localhost:3050/");
+    const zksyncWallet = wallet.connect(provider);
     const factoryContract = new ethers.Contract(
       "0x111C3E89Ce80e62EE88318C2804920D4c96f92bb",
       walletFactoryAbi,
-      wallet
+      zksyncWallet
     );
 
-    const salt = ethers.constants.HashZero;
+    const salt =
+      "0x0000000000000000000000000000000000000000000000000000000000000001";
 
     let deployTx = await factoryContract.populateTransaction.deployWallet(
       salt,
-      [wallet.address]
+      [zksyncWallet.address]
     );
 
     const paymasterInterface = new ethers.utils.Interface([
@@ -57,11 +57,11 @@ const CreateWalletWrapper = () => {
     // Creating transaction that utilizes paymaster feature
     deployTx = {
       ...deployTx,
-      from: wallet.address,
+      from: zksyncWallet.address,
       gasLimit: gasLimit,
       gasPrice: gasPrice,
       chainId: (await provider.getNetwork()).chainId,
-      nonce: await provider.getTransactionCount(wallet.address),
+      nonce: await provider.getTransactionCount(zksyncWallet.address),
       type: 113,
       customData: {
         gasPerPubdata: utils.DEFAULT_GAS_PER_PUBDATA_LIMIT,
@@ -75,8 +75,9 @@ const CreateWalletWrapper = () => {
       value: ethers.BigNumber.from(0),
     };
 
-    const sentTx = await wallet.sendTransaction(deployTx);
+    const sentTx = await zksyncWallet.sendTransaction(deployTx);
     await sentTx.wait();
+    console.log(sentTx);
 
     // calculate deployed account address
 
@@ -85,7 +86,7 @@ const CreateWalletWrapper = () => {
       factoryContract.address,
       utils.hashBytecode(simpleAccountTotal.bytecode),
       salt,
-      abiCoder.encode(["address[]"], [[wallet.address]])
+      abiCoder.encode(["address[]"], [[zksyncWallet.address]])
     );
 
     const accountContract = new ethers.Contract(
@@ -93,40 +94,6 @@ const CreateWalletWrapper = () => {
       simpleAccountTotal.abi,
       provider
     );
-
-    // console.log(password);
-    // console.log("address:", wallet.address);
-    // const [address] = await walletClient.getAddresses();
-    // const account = getAccount(address);
-    // const bytecode = await mainclient.getBytecode({
-    //   address: "0x111C3E89Ce80e62EE88318C2804920D4c96f92bb",
-    // });
-    // const bytecodeType = bytecode as `0x${string}`;
-
-    // const walletFactoryAddress = await walletClient.deployContract({
-    //   abi: walletFactoryAbi,
-    //   account,
-    //   bytecode: bytecodeType,
-    //   args: [wallet.privateKey as `0x${string}`],
-    // });
-    // console.log(walletFactoryAddress, "factory");
-
-    // const { request } = await mainclient.simulateContract({
-    //   address: "0x111C3E89Ce80e62EE88318C2804920D4c96f92bb" as `0x${string}`,
-    //   abi: walletFactoryAbi,
-    //   functionName: "deployWallet",
-    //   args: [
-    //     "0x0000000000000000000000000000000000000000000000000000000000000001",
-    //     [address],
-    //   ],
-    // });
-
-    // const data = await mainclient.readContract({
-    //   address: "0xD7C08B89fC8F6381b0B44154e31eF83b8B03c81a",
-    //   abi: simpleAccountAbi,
-    //   functionName: "isOwner",
-    //   args: [myAdress as `0x${string}`],
-    // });
     console.log(accountContract, wallet.privateKey);
   };
   return (
