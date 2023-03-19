@@ -1,63 +1,65 @@
 import styled from "styled-components";
 
-export const VoteWrapper = styled.div`
-  border: 1px solid #2d2d2d;
-  border-radius: 15px;
-  padding: 0 2em;
-  width: 40%;
-  margin: auto;
-  & > div:first-child {
-    border-bottom: 1px solid #292929;
-    padding: 1em 0;
-    font-size: larger;
-    font-weight: 600;
-  }
-  & > div:nth-child(2) {
-    padding: 1em 0;
-  }
-  & > div:nth-child(2) > div:first-child {
-    padding: 1em 0;
-    border: 1px solid #ffffff;
-    border-radius: 39px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  & > div:nth-child(2) > div:nth-child(2) {
-    cursor: pointer;
-    background: #394aff;
-    padding: 1em 0;
-    border-radius: 39px;
-    margin: 18px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-
-export const InformationWrapper = styled.div`
-  border: 1px solid #2d2d2d;
-  border-radius: 15px;
-  padding: 0 2em;
-  width: 40%;
-  margin: 1em auto;
-  & > div:first-child {
-    border-bottom: 1px solid #292929;
-    padding: 1em 0;
-    font-size: larger;
-    font-weight: 600;
-  }
-  & > div:nth-child(2) {
-    padding: 1em 0;
-  }
-`;
-
-export const InformationColumn = styled.div`
+export const CommunityWrapper = styled.div`
   display: flex;
-  margin: 0.5em 0;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const NameInputStyle = styled.input`
+  width: 28em;
+  height: 3em;
+  margin: 0.5em;
+  padding: 1em;
+  border-radius: 10px;
   font-size: larger;
-  justify-content: space-between;
-  & > b {
-    color: #8b949e;
+  background: black;
+  border-color: white;
+`;
+
+export const MembershipBox = styled.div`
+  width: 34em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+  border: 1px solid #292929;
+  border-radius: 16px;
+`;
+
+export const OneRowMembershipBox = styled.div`
+  width: 100%;
+  padding: 0.5em;
+  & > p {
+    font-size: larger;
   }
+  & > div {
+    display: flex;
+    flex-direction: column;
+  }
+  & input {
+    height: 3em;
+    border-radius: 10px;
+    margin: 0.3em 0;
+    padding: 1.1em;
+    background: black;
+    font-size: large;
+  }
+  & select {
+    height: 3em;
+    padding: 0.2em;
+    border-radius: 10px;
+    font-size: large;
+    background: black;
+  }
+`;
+
+export const AddMembershipButton = styled.div`
+  background: #f44336;
+  padding: 1em 10em;
+  border-radius: 29px;
+  font-size: large;
+  font-weight: 800;
+
+  cursor: pointer;
 `;
