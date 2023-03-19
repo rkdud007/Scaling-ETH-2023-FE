@@ -3,11 +3,11 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import DappOverview from "@/components/home/DappOverview";
 import Navbar from "@/components/shared/Navbar/Navbar";
-import CreateCommunity from "@/components/createPage/CreateCommunity";
+import CreateWalletWrapper from "@/components/createWalletPage/CreateWalletWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Create() {
+export default function CreateWallet() {
   return (
     <>
       <Head>
@@ -18,7 +18,7 @@ export default function Create() {
       </Head>
       <main>
         <Navbar />
-        <CreateCommunity />
+        <CreateWalletWrapper />
       </main>
     </>
   );

@@ -8,6 +8,9 @@ const Navbar = () => {
       <S.StyledButton onClick={() => router.push("/wallet")}>
         Wallet
       </S.StyledButton>
+      <S.StyledButton onClick={() => router.push("/create-wallet")}>
+        Create Wallet
+      </S.StyledButton>
       <S.StyledButton onClick={() => router.push("/create")}>
         Create Community
       </S.StyledButton>
