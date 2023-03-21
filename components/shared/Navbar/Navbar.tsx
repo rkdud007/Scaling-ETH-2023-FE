@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
 import * as S from "./Navbar.styles";
 import { useRecoilValue } from "recoil";
-import { isWalletCreatedState } from "@/shared/recoil";
 
 const Navbar = () => {
-  const isWalletExist = useRecoilValue<boolean>(isWalletCreatedState);
   const router = useRouter();
   return (
     <S.NavbarWrapper>

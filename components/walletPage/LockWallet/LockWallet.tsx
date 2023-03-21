@@ -1,12 +1,10 @@
 import { useRouter } from "next/router";
 import * as S from "./LockWallet.styles";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { isWalletLockedState, passwordState } from "@/shared/recoil";
 import { useState } from "react";
+import { getFromStorage, setToStorage } from "@/shared/localstorage";
 
-const LockWallet = ({ isLocked }: { isLocked: boolean }) => {
-  const [, setIsLocked] = useRecoilState<boolean>(isWalletLockedState);
-  const originialPw = useRecoilValue<string>(passwordState);
+const LockWallet = () => {
+  const originialPw = getFromStorage("password");
   const [inputPw, setInputPw] = useState<string>("");
   const [isError, setError] = useState<boolean>(false);
   const router = useRouter();
@@ -17,8 +15,10 @@ const LockWallet = ({ isLocked }: { isLocked: boolean }) => {
   };
   const handleUnlock = () => {
     if (inputPw === originialPw) {
-      setIsLocked(false);
+      setToStorage("wallet-unlocked", true);
+      router.push("/wallet");
     } else {
+      setToStorage("wallet-unlocked", false);
     }
   };
   return (

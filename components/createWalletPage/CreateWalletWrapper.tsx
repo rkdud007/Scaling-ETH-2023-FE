@@ -4,16 +4,15 @@ import * as S from "./CreateWalletWrapper.styles";
 import { walletFactoryAbi } from "@/shared/abi/walletFactory";
 import { simpleAccountTotal } from "@/shared/abi/simpleAccountTotal";
 import { ethers } from "ethers";
-import { useRecoilState } from "recoil";
-import { isWalletCreatedState, passwordState } from "@/shared/recoil";
+import { setToStorage } from "@/shared/localstorage";
+import { useRouter } from "next/router";
 
-const CreateWalletWrapper = ({ walletCreated }: { walletCreated: boolean }) => {
-  const [, setRecoilPassword] = useRecoilState<string>(passwordState);
+const CreateWalletWrapper = ({ walletCreated }: { walletCreated: any }) => {
   const [password, setPassword] = useState<string>("");
-  const [, setWalletCreated] = useRecoilState<boolean>(isWalletCreatedState);
   const [checkPassword, setCheckPassword] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
   const wallet = Wallet.createRandom();
+  const router = useRouter();
 
   // const myWallet = new Wallet(
   //   "0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110"
@@ -100,8 +99,11 @@ const CreateWalletWrapper = ({ walletCreated }: { walletCreated: boolean }) => {
     );
     console.log(accountContract, wallet.privateKey);
     if (accountContract) {
-      setRecoilPassword(password);
-      setWalletCreated(true);
+      setToStorage("password", password);
+      setToStorage("wallet-created", true);
+      setToStorage("wallet-unlocked", false);
+      router.push("/wallet");
+      // setWalletCreated(true);
     }
   };
   return (

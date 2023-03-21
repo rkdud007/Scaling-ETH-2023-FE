@@ -4,18 +4,14 @@ import { Inter } from "next/font/google";
 import DappOverview from "@/components/home/DappOverview";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import CreateWalletWrapper from "@/components/createWalletPage/CreateWalletWrapper";
-import { useRecoilValue } from "recoil";
-import { isWalletCreatedState } from "@/shared/recoil";
 import { useEffect, useState } from "react";
+import { getFromStorage } from "@/shared/localstorage";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function CreateWallet() {
-  const walletCreated = useRecoilValue<boolean>(isWalletCreatedState);
-  const [iswalletcreated, setIswalletcreated] = useState<boolean>(false);
-  useEffect(() => {
-    setIswalletcreated(walletCreated);
-  }, [walletCreated]);
+  const iswalletcreated = getFromStorage("wallet-created");
+
   return (
     <>
       <Head>
