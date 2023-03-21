@@ -1,4 +1,3 @@
-import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { env } from "./environment";
 
 const localL1network = {
@@ -31,21 +30,21 @@ const localZKSyncnetwork = {
   },
 };
 
-/**
- * Wagmi.sh Configuration (https://wagmi.sh/docs)
- */
+// /**
+//  * Wagmi.sh Configuration (https://wagmi.sh/docs)
+//  */
 
-export const mainclient = createPublicClient({
-  chain: localZKSyncnetwork,
-  transport: http(),
-});
-
-export const walletClient = createWalletClient({
-  chain: localL1network,
-  transport: http("http://localhost:8545/"),
-});
-
-// export const walletClient = createWalletClient({
+// export const mainclient = createPublicClient({
 //   chain: localZKSyncnetwork,
 //   transport: http(),
 // });
+
+// export const walletClient = createWalletClient({
+//   chain: localL1network,
+//   transport: http("http://localhost:8545/"),
+// });
+
+// // export const walletClient = createWalletClient({
+// //   chain: localZKSyncnetwork,
+// //   transport: http(),
+// // });

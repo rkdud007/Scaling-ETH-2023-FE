@@ -1,13 +1,23 @@
+"use client";
+
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import DappOverview from "@/components/home/DappOverview";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import WalletWrapper from "@/components/walletPage/WalletWrapper/WalletWrapper";
+import { useRecoilValue } from "recoil";
+import { isWalletLockedState } from "@/shared/recoil";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Wallet() {
+  const lock = useRecoilValue<boolean>(isWalletLockedState);
+  const [isLocked, setIsLocked] = useState<boolean>(true);
+  useEffect(() => {
+    setIsLocked(lock);
+  }, [lock]);
   return (
     <>
       <Head>
@@ -18,7 +28,7 @@ export default function Wallet() {
       </Head>
       <main>
         <Navbar />
-        <WalletWrapper />
+        <WalletWrapper isLocked={isLocked} />
       </main>
     </>
   );

@@ -7,6 +7,10 @@ import Navbar from "@/components/shared/Navbar/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  if (typeof window !== "undefined") {
+    // Perform localStorage action
+    const item = localStorage.getItem("key");
+  }
   return (
     <>
       <Head>

@@ -4,9 +4,13 @@ import * as S from "./CreateWalletWrapper.styles";
 import { walletFactoryAbi } from "@/shared/abi/walletFactory";
 import { simpleAccountTotal } from "@/shared/abi/simpleAccountTotal";
 import { ethers } from "ethers";
+import { useRecoilState } from "recoil";
+import { isWalletCreatedState, passwordState } from "@/shared/recoil";
 
-const CreateWalletWrapper = () => {
+const CreateWalletWrapper = ({ walletCreated }: { walletCreated: boolean }) => {
+  const [, setRecoilPassword] = useRecoilState<string>(passwordState);
   const [password, setPassword] = useState<string>("");
+  const [, setWalletCreated] = useRecoilState<boolean>(isWalletCreatedState);
   const [checkPassword, setCheckPassword] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
   const wallet = Wallet.createRandom();
@@ -38,9 +42,9 @@ const CreateWalletWrapper = () => {
       walletFactoryAbi,
       zksyncWallet
     );
-
-    const salt =
-      "0x0000000000000000000000000000000000000000000000000000000000000001";
+    const saltUint8Array = ethers.utils.randomBytes(32);
+    const salt = ethers.utils.hexlify(saltUint8Array);
+    console.log(salt, salt.length);
 
     let deployTx = await factoryContract.populateTransaction.deployWallet(
       salt,
@@ -95,28 +99,39 @@ const CreateWalletWrapper = () => {
       provider
     );
     console.log(accountContract, wallet.privateKey);
+    if (accountContract) {
+      setRecoilPassword(password);
+      setWalletCreated(true);
+    }
   };
   return (
     <S.CreateWalletWrapper>
-      <h1>Create New Wallet</h1>
-      <p>Type your password</p>
-      <S.WalletPwInputStyle
-        type="password"
-        value={password}
-        onChange={handlePassword}
-      />
-      <p>Type your password again</p>
-      <S.WalletPwInputStyle
-        type="password"
-        value={checkPassword}
-        onChange={handleAgainPassword}
-      />
-      {isValid ? (
-        <S.UnlockButton onClick={createWalletFunc}>
-          create wallet
-        </S.UnlockButton>
+      {walletCreated ? (
+        <div>success</div>
       ) : (
-        <S.UnlockInvalidButton>create wallet</S.UnlockInvalidButton>
+        <>
+          {" "}
+          <h1>Create New Wallet</h1>
+          <p>Type your password</p>
+          <S.WalletPwInputStyle
+            type="password"
+            value={password}
+            onChange={handlePassword}
+          />
+          <p>Type your password again</p>
+          <S.WalletPwInputStyle
+            type="password"
+            value={checkPassword}
+            onChange={handleAgainPassword}
+          />
+          {isValid ? (
+            <S.UnlockButton onClick={createWalletFunc}>
+              create wallet
+            </S.UnlockButton>
+          ) : (
+            <S.UnlockInvalidButton>create wallet</S.UnlockInvalidButton>
+          )}
+        </>
       )}
     </S.CreateWalletWrapper>
   );
