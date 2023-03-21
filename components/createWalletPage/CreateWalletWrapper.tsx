@@ -11,7 +11,7 @@ const CreateWalletWrapper = ({ walletCreated }: { walletCreated: any }) => {
   const [password, setPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
-  const wallet = Wallet.createRandom();
+
   const router = useRouter();
 
   // const myWallet = new Wallet(
@@ -34,6 +34,7 @@ const CreateWalletWrapper = ({ walletCreated }: { walletCreated: any }) => {
   };
 
   const createWalletFunc = async () => {
+    const wallet = Wallet.createRandom();
     const provider = new Provider("http://localhost:3050/");
     const zksyncWallet = wallet.connect(provider);
     const factoryContract = new ethers.Contract(
