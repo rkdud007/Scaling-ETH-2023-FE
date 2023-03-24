@@ -1,53 +1,33 @@
 import * as S from "./DappOverview.styles";
-
-// TODO : Want to show some information about voting transaction. ex. transaction call from where to where
-const InformationBox = () => {
-  return (
-    <S.InformationWrapper>
-      <div>Information</div>
-      <div>
-        <S.InformationColumn>
-          <b>From</b>
-          <span>hihi</span>
-        </S.InformationColumn>
-        <S.InformationColumn>
-          <b>To</b>
-          <span>hihi</span>
-        </S.InformationColumn>
-        <S.InformationColumn>
-          <b>Gaslimit</b>
-          <span>hihi</span>
-        </S.InformationColumn>
-        <S.InformationColumn>
-          <b>Stretegie(s)</b>
-          <span>hihi</span>
-        </S.InformationColumn>
-        <S.InformationColumn>
-          <b>Stretegie(s)</b>
-          <span>hihi</span>
-        </S.InformationColumn>
-        <S.InformationColumn>
-          <b>Stretegie(s)</b>
-          <span>hihi</span>
-        </S.InformationColumn>
-      </div>
-    </S.InformationWrapper>
-  );
-};
+import { BsCaretDownFill } from "react-icons/bs";
 
 const DappOverview = () => {
   return (
     <>
-      <S.InformationWrapper>
-        <div>Example DAPP : snapshot mock</div>
-      </S.InformationWrapper>
-      <InformationBox />
+      <S.InformationColumn>
+        <h1>Umiswap</h1>
+      </S.InformationColumn>
       <S.VoteWrapper>
-        <div>Cast your vote</div>
         <div>
-          <div>yes</div>
-          <div>Vote</div>
+          <div>
+            <S.NameInputStyle placeholder="0.0" type="number" />
+            <S.TokenSelectStyle>
+              <option>Token A</option>
+              <option>Token B</option>
+            </S.TokenSelectStyle>
+          </div>
+          <S.IconWrapper>
+            <BsCaretDownFill />
+          </S.IconWrapper>
+          <div>
+            <S.NameInputStyle placeholder="0.0" type="number" />
+            <S.TokenSelectStyle>
+              <option>Token A</option>
+              <option>Token B</option>
+            </S.TokenSelectStyle>
+          </div>
         </div>
+        <S.SwapButton>Swap</S.SwapButton>
       </S.VoteWrapper>
     </>
   );

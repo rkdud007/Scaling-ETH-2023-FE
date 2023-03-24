@@ -5,6 +5,8 @@ import logo from "public/logo.png";
 
 const Navbar = () => {
   const router = useRouter();
+  const { query } = router;
+  console.log(query);
   return (
     <S.NavbarWrapper>
       {/* <S.StyledButton onClick={() => router.push("/wallet")}>
