@@ -11,9 +11,9 @@ export const StyledButton = styled.div`
   &:hover {
     background: linear-gradient(
       131deg,
-      rgba(255, 175, 255, 1) 26%,
-      rgba(255, 144, 255, 1) 52%,
-      rgba(255, 0, 255, 1) 92%
+      rgb(239 118 160) 26%,
+      rgb(239 102 138) 52%,
+      rgb(224 80 81) 92%
     );
     color: white;
     border-bottom: 1px solid black;
