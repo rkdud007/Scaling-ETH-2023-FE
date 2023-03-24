@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as S from "./CreateCommunity.styles";
 
 const CreateCommunity = () => {
+  const [baseContract, setBaseContract] = useState<string>("");
   const [memberships, setMemberships] = useState([
     {
       tier: "",
@@ -50,24 +51,41 @@ const CreateCommunity = () => {
     setMemberships(copy);
   };
 
+  const handleContract = (e: any) => {
+    const value = e.target.value;
+    setBaseContract(value);
+  };
+
+  const deployMembership = () => {
+    console.log("deploy");
+  };
+
   return (
     <S.CommunityWrapper>
       <h1>Create your own membership XD</h1>
       {/* <S.NameInputStyle placeholder="Uniswap" /> */}
-      <h2>Add memberships</h2>
+      {/* <h2>Add memberships</h2> */}
       <S.ContractBox>
         <S.OneRowMembershipBox>
           {" "}
-          <h3>CONTRACT</h3>
-          <input placeholder="contract address" />
-          <select
-            placeholder="Select function"
-            onChange={(e) => handleFunctionSelector(e)}
-          >
-            {functionSelectors.map((selector) => (
-              <option key={selector[1]}>{selector[0]}</option>
-            ))}
-          </select>
+          <h3>TARGET CONTRACT</h3>
+          <div>
+            <input
+              placeholder="contract address"
+              value={baseContract}
+              onChange={handleContract}
+            />
+            {baseContract === "0xcc" && (
+              <select
+                placeholder="Select function"
+                onChange={(e) => handleFunctionSelector(e)}
+              >
+                {functionSelectors.map((selector) => (
+                  <option key={selector[1]}>{selector[0]}</option>
+                ))}
+              </select>
+            )}
+          </div>
         </S.OneRowMembershipBox>
       </S.ContractBox>
 
@@ -76,18 +94,20 @@ const CreateCommunity = () => {
 
         return (
           <S.MembershipBox key={tier}>
-            <h3>Tier {tier} </h3>
-            <div>
-              {tier >= 1 ? (
-                <button
-                  onClick={async () => await handleDeleteMembership(tier)}
-                >
-                  delete
-                </button>
-              ) : (
-                <></>
-              )}
-            </div>
+            <S.TierWrapper>
+              <h2>Tier {tier} </h2>
+              <div>
+                {tier + 1 === memberships.length && tier !== 0 ? (
+                  <S.DeleteTier
+                    onClick={async () => await handleDeleteMembership(tier)}
+                  >
+                    delete
+                  </S.DeleteTier>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </S.TierWrapper>
 
             <S.OneRowMembershipBox>
               <h3>CONDITION</h3>
@@ -100,7 +120,7 @@ const CreateCommunity = () => {
               <h3>BENEFIT</h3>
               <div>
                 <select>
-                  <option>Gas Fee Discount</option>
+                  <option>Gas Fee Discount (%)</option>
                 </select>
                 <input
                   onChange={(e) => handleBenefit(e, tier)}
@@ -115,6 +135,9 @@ const CreateCommunity = () => {
       <S.AddMembershipButton onClick={addMembership}>
         add membership
       </S.AddMembershipButton>
+      <S.DeployMembershipButton onClick={deployMembership}>
+        DEPLOY MEMBERSHIP CONTRACT
+      </S.DeployMembershipButton>
     </S.CommunityWrapper>
   );
 };
