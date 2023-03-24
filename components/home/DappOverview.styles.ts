@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const VoteWrapper = styled.div`
-  border: 1px solid #2d2d2d;
+  border: 1px solid #e15052;
   border-radius: 15px;
 
-  width: 40%;
+  width: 30%;
   padding: 3em;
   margin: auto;
 `;
@@ -32,7 +32,8 @@ export const InformationColumn = styled.div`
 
 export const NameInputStyle = styled.input`
   width: 23em;
-  height: 3em;
+  all: unset;
+  height: 1em;
   margin: 0.5em;
   padding: 1em;
   border-radius: 10px;
@@ -41,18 +42,38 @@ export const NameInputStyle = styled.input`
   border-color: white;
 `;
 
+export const SwapBox = styled.div`
+  display: flex;
+  margin: 1em 0;
+  align-items: center;
+  border-radius: 78px;
+  justify-content: center;
+  width: 100%;
+  background: #000000;
+  border: 1px solid rgb(224 80 81);
+`;
+
 export const TokenSelectStyle = styled.select`
   height: 3em;
-  padding: 0.2em;
-  border-radius: 10px;
-  font-size: large;
-  background: black;
+
+  cursor: pointer;
+  background: #1b1b1b;
+  border-radius: 32px;
+  padding: 0 30px;
+  border: black;
+  font-weight: 800;
+  font-size: inherit;
 `;
 
 export const SwapButton = styled.div`
-  background: #f44336;
+  background: linear-gradient(
+    131deg,
+    rgb(239 118 160) 26%,
+    rgb(239 102 138) 52%,
+    rgb(224 80 81) 92%
+  );
   padding: 1em 10em;
-  border-radius: 29px;
+  border-radius: 78px;
   font-size: large;
   font-weight: 800;
   display: flex;
