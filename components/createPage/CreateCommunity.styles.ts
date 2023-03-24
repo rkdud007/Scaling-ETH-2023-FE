@@ -4,6 +4,7 @@ export const CommunityWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 3em;
 `;
 
 export const NameInputStyle = styled.input`
@@ -25,6 +26,13 @@ export const MembershipBox = styled.div`
   padding: 2em;
   border: 1px solid #292929;
   border-radius: 16px;
+`;
+export const ContractBox = styled.div`
+  width: 44em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
 `;
 
 export const OneRowMembershipBox = styled.div`

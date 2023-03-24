@@ -21,7 +21,7 @@ export default function Home() {
       </Head>
       <main>
         <Navbar />
-        <DappOverview />
+        <div>FUCHSIA </div>
       </main>
     </>
   );

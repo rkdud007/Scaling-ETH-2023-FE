@@ -1,19 +1,16 @@
-"use client";
-
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import DappOverview from "@/components/home/DappOverview";
 import Navbar from "@/components/shared/Navbar/Navbar";
-import WalletWrapper from "@/components/walletPage/WalletWrapper/WalletWrapper";
-import { useEffect, useState } from "react";
-import { getFromStorage } from "@/shared/localstorage";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Wallet() {
-  const isUnLocked = getFromStorage("wallet-unlocked");
-
+export default function Example() {
+  if (typeof window !== "undefined") {
+    // Perform localStorage action
+    const item = localStorage.getItem("key");
+  }
   return (
     <>
       <Head>
@@ -24,7 +21,7 @@ export default function Wallet() {
       </Head>
       <main>
         <Navbar />
-        <WalletWrapper isUnLocked={isUnLocked} />
+        <DappOverview />
       </main>
     </>
   );
