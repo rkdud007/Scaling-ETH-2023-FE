@@ -5,6 +5,7 @@ export const LandingTitle = styled.div`
   font-weight: 800;
   line-height: 1.2;
   padding: 0.4em 0px;
+  color: rgb(106 2 0);
 `;
 
 export const LandingZKSync = styled.div`
