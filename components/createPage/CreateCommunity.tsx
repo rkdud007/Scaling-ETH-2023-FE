@@ -65,7 +65,7 @@ const CreateCommunity = () => {
             onChange={(e) => handleFunctionSelector(e)}
           >
             {functionSelectors.map((selector) => (
-              <option value={selector[1]}>{selector[0]}</option>
+              <option key={selector[1]}>{selector[0]}</option>
             ))}
           </select>
         </S.OneRowMembershipBox>
