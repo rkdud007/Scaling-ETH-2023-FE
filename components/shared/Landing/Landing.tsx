@@ -15,7 +15,7 @@ const Landing = () => {
           INCENTIVISE MEMBER, <br /> WALLET FOR COMMUNITY
         </S.LandingTitle>
         <S.LandingDesc>
-          Personalize member's on-chain membership benefits using account
+          Personalize members on-chain membership benefits using account
           abstraction
         </S.LandingDesc>
         <S.LandingZKSync
