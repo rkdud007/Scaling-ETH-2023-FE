@@ -34,8 +34,8 @@ const CreateCommunity = () => {
   >([]);
 
   const functionSelectors = [
-    ["swapExactTokenAWithTokenB(uint256)", 0xee4299a5],
-    ["swapExactTokenBWithTokenA(uint256)", 0xc12fd28f],
+    ["SWAP", 0x2cc4081e],
+    ["DEPOSIT", 0x94ec6d78],
   ];
 
   const addMembership = () => {
@@ -186,7 +186,7 @@ const CreateCommunity = () => {
             <S.OneRowMembershipBox>
               {" "}
               <h3>TARGET CONTRACT</h3>
-              <h5>Umiswap : 0x8e74FbeE22c3B77B00447e71fFc0A45d68761785</h5>
+              <h5>Syncswap : 0xB3b7fCbb8Db37bC6f572634299A58f51622A847e</h5>
               <div>
                 <input
                   placeholder="contract address"
@@ -194,7 +194,7 @@ const CreateCommunity = () => {
                   onChange={handleContract}
                 />
                 {baseContract ===
-                  "0x8e74FbeE22c3B77B00447e71fFc0A45d68761785" && (
+                  "0xB3b7fCbb8Db37bC6f572634299A58f51622A847e" && (
                   <select
                     placeholder="Select function"
                     onChange={(e) => handleFunctionSelector(e)}
