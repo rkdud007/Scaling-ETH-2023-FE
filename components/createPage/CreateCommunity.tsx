@@ -133,6 +133,7 @@ const CreateCommunity = () => {
     isLoading: balanceLoading,
   } = useBalance({
     staleTime: 2_000,
+    watch: true,
     address: deployedMembershipContract as `0x${string}`,
   });
 
