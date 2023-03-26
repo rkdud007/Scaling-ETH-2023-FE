@@ -241,7 +241,7 @@ const CreateCommunity = () => {
               </S.MembershipBox>
             );
           })}
-          {baseContract === "0x8e74FbeE22c3B77B00447e71fFc0A45d68761785" && (
+          {baseContract === "0xB3b7fCbb8Db37bC6f572634299A58f51622A847e" && (
             <>
               {" "}
               <div>
