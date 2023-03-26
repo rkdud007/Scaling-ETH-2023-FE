@@ -1,13 +1,21 @@
 import { useState } from "react";
 import * as S from "./CreateCommunity.styles";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { membershipFactory } from "@/shared/abi/membershipFactory";
 import { provider } from "@/shared/wagmiClient";
 import { getAccount } from "@wagmi/core";
-import { useContract, useProvider, useSigner } from "wagmi";
+import {
+  useBalance,
+  useContract,
+  usePrepareSendTransaction,
+  useProvider,
+  useSendTransaction,
+  useSigner,
+} from "wagmi";
 import { types, utils } from "zksync-web3";
 import { membershipTotal } from "@/shared/abi/membershipTotal";
 import { element } from "@rainbow-me/rainbowkit/dist/css/reset.css";
+import Link from "next/link";
 
 const CreateCommunity = () => {
   const [baseContract, setBaseContract] = useState<string>("");
@@ -110,13 +118,64 @@ const CreateCommunity = () => {
     }
   };
 
+  const { config } = usePrepareSendTransaction({
+    request: {
+      to: deployedMembershipContract,
+      value: BigNumber.from("100000000000000000"),
+    },
+  });
+  const { data, isLoading, isSuccess, sendTransaction } =
+    useSendTransaction(config);
+
+  const {
+    data: balanceData,
+    isError: balanceErr,
+    isLoading: balanceLoading,
+  } = useBalance({
+    staleTime: 2_000,
+    address: deployedMembershipContract as `0x${string}`,
+  });
+
   return (
     <S.CommunityWrapper>
       {deployedMembershipContract !== "" ? (
-        <>
+        <S.SuccessWrapper>
           <h1>Successfully created your own membership XD</h1>
-          <div>{deployedMembershipContract}</div>
-        </>
+          <S.ResultContractWrapper>
+            <div>{deployedMembershipContract}</div>
+            <Link
+              target="blank"
+              href={`https://goerli.explorer.zksync.io/address/${deployedMembershipContract}`}
+            >
+              <div>View on block explorer</div>
+            </Link>
+          </S.ResultContractWrapper>
+          {balanceLoading && <div>Fetching balance…</div>}
+          {balanceErr && <div>Error fetching balance</div>}
+          <div>
+            {" "}
+            Balance: {balanceData?.formatted} {balanceData?.symbol}
+          </div>
+          <S.TopupBtn
+            disabled={!sendTransaction}
+            onClick={() => sendTransaction?.()}
+          >
+            Top up Paymaster (0.1ETH)
+          </S.TopupBtn>
+          {isLoading && <div>Check Wallet</div>}
+          {isSuccess && (
+            <div>
+              Transaction:{" "}
+              <Link
+                style={{ textDecoration: "underline" }}
+                target="blank"
+                href={`https://goerli.explorer.zksync.io/tx/${data?.hash}`}
+              >
+                {data?.hash}
+              </Link>{" "}
+            </div>
+          )}
+        </S.SuccessWrapper>
       ) : (
         <>
           <h1>Create your own membership XD</h1>
@@ -181,42 +240,47 @@ const CreateCommunity = () => {
               </S.MembershipBox>
             );
           })}
-          <div>
-            <S.MembershipBox>
-              <S.OneRowMembershipBox>
-                <h3>CONDITION</h3>
-                <div>
-                  <input
-                    type="number"
-                    name="txCountThreshold"
-                    value={membership.txCountThreshold}
-                    placeholder="number of transaction"
-                    onChange={handleChange}
-                  />
-                </div>
-              </S.OneRowMembershipBox>
-              <S.OneRowMembershipBox>
-                <h3>BENEFIT</h3>
+          {baseContract === "0x8e74FbeE22c3B77B00447e71fFc0A45d68761785" && (
+            <>
+              {" "}
+              <div>
+                <S.MembershipBox>
+                  <S.OneRowMembershipBox>
+                    <h3>CONDITION</h3>
+                    <div>
+                      <input
+                        type="number"
+                        name="txCountThreshold"
+                        value={membership.txCountThreshold}
+                        placeholder="number of transaction"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </S.OneRowMembershipBox>
+                  <S.OneRowMembershipBox>
+                    <h3>BENEFIT</h3>
 
-                <select>
-                  <option>Gas Fee Discount (%)</option>
-                </select>
-                <input
-                  type="number"
-                  name="benefit"
-                  value={membership.benefit}
-                  onChange={handleChange}
-                  placeholder="write down percentage"
-                />
-              </S.OneRowMembershipBox>
-            </S.MembershipBox>
-          </div>
-          <S.AddMembershipButton onClick={addMembership}>
-            add membership
-          </S.AddMembershipButton>
-          <S.DeployMembershipButton onClick={deployMembership}>
-            DEPLOY MEMBERSHIP CONTRACT
-          </S.DeployMembershipButton>
+                    <select>
+                      <option>Gas Fee Discount (%)</option>
+                    </select>
+                    <input
+                      type="number"
+                      name="benefit"
+                      value={membership.benefit}
+                      onChange={handleChange}
+                      placeholder="write down percentage"
+                    />
+                  </S.OneRowMembershipBox>
+                </S.MembershipBox>
+              </div>
+              <S.AddMembershipButton onClick={addMembership}>
+                add membership
+              </S.AddMembershipButton>
+              <S.DeployMembershipButton onClick={deployMembership}>
+                DEPLOY MEMBERSHIP CONTRACT
+              </S.DeployMembershipButton>
+            </>
+          )}
         </>
       )}
     </S.CommunityWrapper>

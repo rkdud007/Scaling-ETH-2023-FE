@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import * as S from "./Navbar.styles";
 import Image from "next/image";
-import logo from "public/logo.svg";
+import logo from "public/fuchsia-logo.png";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Navbar = () => {
@@ -18,7 +18,7 @@ const Navbar = () => {
         Create Wallet
       </S.StyledButton> */}
       <div onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
-        <Image src={logo} alt={"logo"} width={200} />
+        <Image src={logo} alt={"logo"} width={130} />
       </div>
       <S.LandingBtnWrapper>
         {pathname === "/example" ? (

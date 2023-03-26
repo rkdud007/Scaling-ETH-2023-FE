@@ -7,6 +7,35 @@ export const CommunityWrapper = styled.div`
   padding: 3em;
 `;
 
+export const SuccessWrapper = styled.div`
+  height: 93%;
+
+  margin: 8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+export const TopupBtn = styled.button`
+  padding: 1em 2em;
+  margin: 1em;
+  cursor: pointer;
+  background: #660326;
+  border-radius: 10px;
+`;
+
+export const ResultContractWrapper = styled.div`
+  font-size: large;
+  margin: 0.3em;
+  display: flex;
+  & > a {
+    margin: 0 1.2em;
+    font-weight: 300;
+    text-decoration: underline;
+  }
+`;
+
 export const NameInputStyle = styled.input`
   width: 28em;
   height: 3em;
