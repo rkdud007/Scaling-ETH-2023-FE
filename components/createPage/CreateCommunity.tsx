@@ -3,22 +3,30 @@ import * as S from "./CreateCommunity.styles";
 
 const CreateCommunity = () => {
   const [baseContract, setBaseContract] = useState<string>("");
-  const [memberships, setMemberships] = useState([
+  const [tier, setTier] = useState<number>(0);
+  const [membership, setMembership] = useState({
+    tier: tier,
+    benefit: 0,
+    txCountThreshold: 0,
+    functionSelector: "ee4299a5",
+    contractAddress: baseContract,
+  });
+  const [memberships, setMemberships] = useState<any[]>([
     {
-      tier: "",
-      benefit: "",
-      txCountThreshold: "",
+      tier: tier,
+      benefit: 0,
+      txCountThreshold: 0,
       functionSelector: "ee4299a5",
-      contractAddress: "",
+      contractAddress: baseContract,
     },
   ]);
 
   const basicMembership = {
-    tier: "",
-    benefit: "",
-    txCountThreshold: "",
+    tier: tier,
+    benefit: 0,
+    txCountThreshold: 0,
     functionSelector: "ee4299a5",
-    contractAddress: "",
+    contractAddress: baseContract,
   };
 
   const functionSelectors = [
@@ -27,27 +35,46 @@ const CreateCommunity = () => {
   ];
 
   const addMembership = () => {
-    const copy = [...memberships];
-    const copyMembership = basicMembership;
-    copy.push(copyMembership);
+    const copy = memberships;
+    console.log(copy);
+    copy.push(membership);
     setMemberships(copy);
+
+    basicMembership.tier = tier + 1;
+    setMembership(basicMembership);
+
+    console.log(copy);
   };
 
   const handleFunctionSelector = (e: any) => {
     const value = e.target.value;
     console.log(value);
+    const copy = { ...membership };
+    copy.functionSelector = value;
+    setMembership(copy);
   };
 
   const handleBenefit = (e: any, tier: number) => {
     const value = e.target.value;
     console.log(value, tier);
+    const copy = { ...membership };
+    copy.benefit = value;
+    setMembership(copy);
+    console.log(copy);
   };
 
-  const handleDeleteMembership = async (index: number) => {
-    let copy = [...memberships];
-
-    copy = copy.filter((item) => copy.indexOf(item) !== index);
+  const handleCondition = (e: any) => {
+    const value = e.target.value;
+    console.log(value);
+    const copy = { ...membership };
+    copy.txCountThreshold = value;
+    setMembership(copy);
     console.log(copy);
+  };
+
+  const handleDeleteMembership = async () => {
+    const copy = [...memberships];
+    copy.pop();
     setMemberships(copy);
   };
 
@@ -89,18 +116,14 @@ const CreateCommunity = () => {
         </S.OneRowMembershipBox>
       </S.ContractBox>
 
-      {memberships.map((membership) => {
-        const tier = memberships.indexOf(membership);
-
+      {memberships.map((one) => {
         return (
-          <S.MembershipBox key={tier}>
+          <S.MembershipBox key={one.tier}>
             <S.TierWrapper>
-              <h2>Tier {tier} </h2>
+              <h2>Tier {one.tier} </h2>
               <div>
-                {tier + 1 === memberships.length && tier !== 0 ? (
-                  <S.DeleteTier
-                    onClick={async () => await handleDeleteMembership(tier)}
-                  >
+                {one.tier === memberships.length && one.tier !== 1 ? (
+                  <S.DeleteTier onClick={handleDeleteMembership}>
                     delete
                   </S.DeleteTier>
                 ) : (
@@ -113,19 +136,36 @@ const CreateCommunity = () => {
               <h3>CONDITION</h3>
 
               <div>
-                <input placeholder="number of transaction" />
+                {one.tier === memberships.length ? (
+                  <input
+                    value={membership.txCountThreshold}
+                    placeholder="number of transaction"
+                    onChange={handleCondition}
+                  />
+                ) : (
+                  <div>{one.txCountThreshold}</div>
+                )}
               </div>
             </S.OneRowMembershipBox>
             <S.OneRowMembershipBox>
               <h3>BENEFIT</h3>
               <div>
-                <select>
-                  <option>Gas Fee Discount (%)</option>
-                </select>
-                <input
-                  onChange={(e) => handleBenefit(e, tier)}
-                  placeholder="write down percentage"
-                />
+                {one.tier === memberships.length ? (
+                  <div>
+                    <select>
+                      <option>Gas Fee Discount (%)</option>
+                    </select>
+                    <input
+                      onChange={(e) => handleBenefit(e, tier)}
+                      placeholder="write down percentage"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <div>Gas Fee Discount (%)</div>
+                    <div>{one.benefit}</div>
+                  </div>
+                )}
               </div>
             </S.OneRowMembershipBox>
           </S.MembershipBox>

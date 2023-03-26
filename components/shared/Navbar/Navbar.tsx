@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import * as S from "./Navbar.styles";
 import Image from "next/image";
 import logo from "public/logo.svg";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Navbar = () => {
   const router = useRouter();
@@ -38,6 +39,7 @@ const Navbar = () => {
             Create Community
           </S.StyledButton>
         )}
+        <ConnectButton />
       </S.LandingBtnWrapper>
     </S.NavbarWrapper>
   );

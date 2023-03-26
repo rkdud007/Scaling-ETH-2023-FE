@@ -1,6 +1,18 @@
+import {
+  connectorsForWallets,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { env } from "./environment";
+import {
+  injectedWallet,
+  metaMaskWallet,
+  rainbowWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
 
-const localL1network = {
+export const localL1network = {
   id: 9,
   network: "l1-local",
   name: "L1 local",
@@ -15,7 +27,22 @@ const localL1network = {
   },
 };
 
-const localZKSyncnetwork = {
+export const testnet = {
+  id: 280,
+  network: "zkSync Era Testnet",
+  name: "zkSync Era Testnet",
+  nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://testnet.era.zksync.dev"],
+    },
+    public: {
+      http: ["https://testnet.era.zksync.dev"],
+    },
+  },
+};
+
+export const localZKSyncnetwork = {
   id: 270,
   network: "l2-local-zksync",
   name: "L2 local zkSync",
@@ -48,3 +75,32 @@ const localZKSyncnetwork = {
 // //   chain: localZKSyncnetwork,
 // //   transport: http(),
 // // });
+
+// const provider = "https://zksync2-testnet.zksync.dev";
+export const { chains, provider } = configureChains(
+  [testnet],
+  [
+    jsonRpcProvider({
+      rpc: (_testnet) => ({
+        http: "https://zksync2-testnet.zksync.dev",
+      }),
+    }),
+  ]
+);
+const connectors = connectorsForWallets([
+  {
+    groupName: "Recommended",
+    wallets: [
+      injectedWallet({ chains }),
+      rainbowWallet({ chains }),
+      metaMaskWallet({ chains }),
+    ],
+  },
+]);
+
+export const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
+// a

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import * as S from "./DappOverview.styles";
 import { BsCaretDownFill } from "react-icons/bs";
+import { Provider, Wallet } from "zksync-web3";
+import { ethers } from "ethers";
+import { protocolATotal } from "@/shared/abi/protocolATotal";
 
 const DappOverview = () => {
   const [swapValue, setSwapValue] = useState<number>(0);
@@ -27,6 +30,18 @@ const DappOverview = () => {
     } else {
       setSelect1Value("FUCH");
     }
+  };
+  const wallet = Wallet.createRandom();
+  const handleSwap = () => {
+    const provider = new Provider("https://testnet.era.zksync.dev");
+    const zksyncWallet = wallet.connect(provider);
+
+    const protocolContract = new ethers.Contract(
+      "0x8e74FbeE22c3B77B00447e71fFc0A45d68761785",
+      protocolATotal.abi,
+      zksyncWallet
+    );
+    console.log(protocolContract);
   };
   return (
     <>
@@ -65,7 +80,7 @@ const DappOverview = () => {
             </S.TokenSelectStyle>
           </S.SwapBox>
         </div>
-        <S.SwapButton>Swap</S.SwapButton>
+        <S.SwapButton onClick={handleSwap}>Swap</S.SwapButton>
       </S.VoteWrapper>
     </>
   );
