@@ -6,6 +6,7 @@ import { BigNumber, ethers, utils } from "ethers";
 import { protocolATotal } from "@/shared/abi/protocolATotal";
 import { membershipTotal } from "@/shared/abi/membershipTotal";
 import styled from "styled-components";
+import { simpleAccountTotal } from "@/shared/abi/simpleAccountTotal";
 
 const DappOverview = () => {
 	const [swapValue, setSwapValue] = useState<number>(0);
@@ -44,7 +45,30 @@ const DappOverview = () => {
 	}, []);
 
 	const handleSubscribe = async () => {
-		let tx = await protocol.populateTransaction.swapExactTokenAWithTokenB(69420);
+		if (!account) return;
+
+		const accContract = new ethers.Contract(
+			account,
+			[
+				{
+					inputs: [
+						{
+							internalType: "address",
+							name: "membership",
+							type: "address",
+						},
+					],
+					name: "subscribeToMembership",
+					outputs: [],
+					stateMutability: "nonpayable",
+					type: "function",
+				},
+			],
+			provider
+		);
+		let tx = await accContract.populateTransaction.subscribeToMembership(
+			"0x4d69de6Ce6EdDb5F35D6549A25332Ff15D718FCB"
+		);
 
 		try {
 			//@ts-ignore
@@ -100,7 +124,15 @@ const DappOverview = () => {
 	const handleSwap = async () => {
 		if (!account) return;
 
-		let tx = await protocol.populateTransaction.swapExactTokenAWithTokenB(69420);
+		let tx = await protocol.populateTransaction.swapExactTokenAWithTokenB(swapValue);
+
+		// const abiCoder = new ethers.utils.AbiCoder();
+		// let params = abiCoder.encode(["uint256"], [swapValue]);
+		// console.log("params encode", params);
+
+		// // function signature
+		// let data = "0xee4299a5" + params.substring(2);
+		// console.log("calldata", data);
 
 		try {
 			//@ts-ignore
@@ -121,6 +153,7 @@ const DappOverview = () => {
 						...tx,
 						// @ts-ignore
 						from: account,
+
 						gasPrice: BigNumber.from("0x9184e72a000"), // 10000000000000
 					},
 				],
